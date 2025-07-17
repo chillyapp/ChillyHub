@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChillyCheck - Application Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .app-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .app-description {
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .app-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .status-live {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-development {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-planned {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .app-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .app-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .app-button.disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .stats-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌶️ ChillyCheck</h1>
+            <p>Your centralized application hub for business management, analytics, and productivity tools</p>
+        </div>
+
+        <div class="stats-section">
+            <h2 style="margin-bottom: 20px; font-size: 1.8rem;">Application Portfolio</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalApps">4</span>
+                    <span class="stat-label">Total Applications</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="liveApps">1</span>
+                    <span class="stat-label">Live Applications</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="inDevelopment">2</span>
+                    <span class="stat-label">In Development</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="plannedApps">1</span>
+                    <span class="stat-label">Planned</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="apps-grid">
+            <div class="app-card">
+                <span class="app-icon">💎</span>
+                <h3 class="app-title">Mineral Sales Tracker</h3>
+                <p class="app-description">
+                    AI-powered mineral and crystal sales management system with inventory tracking, 
+                    supplier analytics, and Whatnot integration.
+                </p>
+                <span class="app-status status-development">In Development</span>
+                <a href="/minerals" class="app-button">Launch Application</a>
+            </div>
+
+            <div class="app-card">
+                <span class="app-icon">📊</span>
+                <h3 class="app-title">Business Dashboard</h3>
+                <p class="app-description">
+                    Comprehensive business analytics dashboard with real-time metrics, 
+                    financial tracking, and performance insights across all ventures.
+                </p>
+                <span class="app-status status-planned">Planned</span>
+                <a href="#" class="app-button disabled">Coming Soon</a>
+            </div>
+
+            <div class="app-card">
+                <span class="app-icon">🎯</span>
+                <h3 class="app-title">Project Manager</h3>
+                <p class="app-description">
+                    Task management and project tracking system with team collaboration, 
+                    deadline monitoring, and progress visualization.
+                </p>
+                <span class="app-status status-development">In Development</span>
+                <a href="/projects" class="app-button disabled">Coming Soon</a>
+            </div>
+
+            <div class="app-card">
+                <span class="app-icon">🤖</span>
+                <h3 class="app-title">AI Assistant Hub</h3>
+                <p class="app-description">
+                    Centralized AI assistant for business automation, customer service, 
+                    and intelligent data processing across all applications.
+                </p>
+                <span class="app-status status-development">In Development</span>
+                <a href="/ai" class="app-button disabled">Coming Soon</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 ChillyCheck Applications. Built with modern web technologies and AI integration.</p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats on load
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const finalValue = parseInt(stat.textContent);
+                let currentValue = 0;
+                const increment = finalValue / 30;
+                
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        stat.textContent = finalValue;
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(currentValue);
+                    }
+                }, 50);
+            });
+
+            // Add click tracking for app cards
+            document.querySelectorAll('.app-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('app-button')) {
+                        const button = this.querySelector('.app-button');
+                        if (!button.classList.contains('disabled')) {
+                            window.location.href = button.href;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
